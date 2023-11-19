@@ -1,0 +1,32 @@
+<meta charset="UTF-8">
+<textarea name="" id="" cols="50" rows="30" wrap="off" style="width: 914px; height: 46px;"></textarea>
+<br>
+原理：修改 eval 函数 <button onclick="aEval(T$0.value)">解源代码</button>
+<button onclick="T$0.value='',T$1.hidden = 'hidden'">清空</button>
+<button onclick="T$1.setSelectionRange(0,T$1.value.length);T$1.focus();document.execCommand('copy'),this.focus()">复制</button>
+<br>
+<textarea name="" id="" cols="50" rows="30" style="width: 914px; height: 636px;" hidden></textarea>
+
+<script>
+T$ = document.querySelectorAll('textarea');
+T$0 = T$[0];
+T$1 = T$[1];
+aEval = eval;
+window.eval = function (str) {
+  T$1.value = str;
+  T$1.hidden = '';
+};
+aFunc = Function;
+Function.prototype.constructor = function (str) {
+  if (str.trimStart().startsWith('return')) {
+    return new aFunc(str);
+  } else {
+    T$1.value = str;
+    T$1.hidden = '';
+    return function () {};
+  }
+};
+onerror = function(e){
+    T$1.value = e;
+}
+</script>
